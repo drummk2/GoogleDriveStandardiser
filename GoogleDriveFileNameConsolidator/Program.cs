@@ -1,29 +1,29 @@
 ﻿using System.Configuration;
 
-namespace GoogleDriveFileNameConsolidator
+namespace GoogleDriveStandardiser
 {
     /// <summary>
-    /// The main application class from which the name consolidation process should be carried out.
+    /// The main application class from which the name standardisation process should be carried out.
     /// </summary>
     internal class Program
     {
         private static void Main()
         {
-            /* Determine the directory from which the name consolidation process should begin. */
+            /* Determine the directory from which the name standardisation process should begin. */
             string rootDirectory = ConfigurationManager.AppSettings?["RootDirectory"] ?? string.Empty;
 
             /* Iterate through all of the child items in the root directory. For each:
              *     - Directory -> Recursively iterate through that directory.
              *     - File -> Rename the file to match the name of it's parent directory.
              */
-            ConsolidateFileNames(rootDirectory);
+            StandardiseFileNames(rootDirectory);
         }
 
         /// <summary>
-        /// Recursively process everything from the current directory downwards, consolidating the names of all files in the process.
+        /// Recursively process everything from the current directory downwards, standardising the names of all files in the process.
         /// </summary>
         /// <param name="currentDir">The path of the current directory.</param>
-        private static void ConsolidateFileNames(string currentDir)
+        private static void StandardiseFileNames(string currentDir)
         {
             string directoryName = Path.GetFileName(currentDir);
             int renameCounter = 1;
@@ -43,7 +43,7 @@ namespace GoogleDriveFileNameConsolidator
             }
 
             /* Recursively process all of the subdirectories in this directory. */
-            new List<string>(Directory.GetDirectories(currentDir)).ForEach(ConsolidateFileNames);
+            new List<string>(Directory.GetDirectories(currentDir)).ForEach(StandardiseFileNames);
         }
     }
 }
